@@ -1,0 +1,53 @@
+<div style="width: 100%; height: 600px;">
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/1.12.0/model-viewer.min.js"></script>
+
+    <style>
+        #ar-button {
+            padding: 12px 24px !important; 
+            border: 2px solid #333 !important; 
+            background-color: #f0f0f0 !important; 
+            color: #333 !important; 
+            border-radius: 6px !important; 
+            cursor: pointer !important;
+            font-weight: bold !important;
+            font-size: 18px !important;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+        }
+    </style>
+    
+    <model-viewer 
+        id="myModelViewer"
+        src="https://static.wixstatic.com/3d/ea23d8_548c5c649d9b45b79f8f41cf850ae351.glb" 
+        ar 
+        ar-modes="webxr scene-viewer quick-look" 
+        camera-controls 
+        environment-image="https://static.wixstatic.com/media/ea23d8_a94869e2f7fb4f3d83811e0c1797b8b0~mv2.jpg"
+        camera-orbit="0deg 90deg auto"
+        field-of-view="38.59deg"
+        tone-mapping="agx"
+        style="width: 100%; height: 100%;"
+        autoplay="false"
+    >
+        <button slot="ar-button" id="ar-button">
+            View in your space
+        </button>
+    </model-viewer>
+
+    <script>
+        const modelViewer = document.querySelector('#myModelViewer');
+
+        // Animation only runs when the user exits AR mode
+        modelViewer.addEventListener('ar-status', (event) => {
+            if (event.detail.status === 'exit') {
+                // If the model has animations, play the first one once.
+                if (modelViewer.availableAnimations.length > 0) {
+                    modelViewer.currentTime = 0; 
+                    modelViewer.play({ 
+                        repetitions: 1, 
+                        animationName: modelViewer.availableAnimations[0] 
+                    });
+                }
+            }
+        });
+    </script>
+</div>
