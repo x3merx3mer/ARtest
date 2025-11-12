@@ -37,6 +37,7 @@
     <main class="w-full max-w-4xl">
         <!-- The model-viewer component -->
         <model-viewer
+            id="model-viewer-element"
             src="https://static.wixstatic.com/3d/ea23d8_548c5c649d9b45b79f8f41cf850ae351.glb"
             alt="A detailed 3D geometric model"
             ar
@@ -47,15 +48,38 @@
             class="mx-auto"
         >
             <!-- Slot for AR button (model-viewer handles button appearance) -->
-            <button slot="ar-button" class="mt-4 px-6 py-3 bg-indigo-600 text-white font-bold rounded-full shadow-lg hover:bg-indigo-700 transition duration-300 transform hover:scale-105">
+            <button slot="ar-button" id="ar-button" class="mt-4 px-6 py-3 bg-indigo-600 text-white font-bold rounded-full shadow-lg hover:bg-indigo-700 transition duration-300 transform hover:scale-105">
                 ✨ View in AR
             </button>
         </model-viewer>
     </main>
 
     <footer class="mt-6 text-center text-sm text-gray-500 w-full max-w-4xl">
-        <p>Use your mouse/touch to orbit and zoom the model. Tap "View in AR" on a compatible mobile device.</p>
+        <p id="footer-text">Initializing AR check...</p>
     </footer>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const modelViewer = document.getElementById('model-viewer-element');
+            const arButton = document.getElementById('ar-button');
+            const footerText = document.getElementById('footer-text');
+            
+            if (modelViewer && arButton) {
+                // Listen for the model to be loaded and AR readiness to be determined
+                modelViewer.addEventListener('loaded', () => {
+                    // Check if the model-viewer component determined that AR is supported
+                    if (modelViewer.hasAttribute('ar-status') && modelViewer.getAttribute('ar-status') === 'supported') {
+                        // AR is supported, the button is visible and functional
+                        footerText.textContent = 'Use your mouse/touch to orbit and zoom the model. Tap "View in AR" on a compatible mobile device.';
+                    } else {
+                        // AR is NOT supported (e.g., desktop, non-secure environment). Hide the button and display a message.
+                        arButton.style.display = 'none'; // Hide the button
+                        footerText.innerHTML = 'AR is not supported in this environment. <br> **Requirements:** Compatible mobile device AND a secure (HTTPS) connection.';
+                        console.warn("AR not supported. Ensure you are on a compatible mobile device and the page is loaded via HTTPS.");
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>
