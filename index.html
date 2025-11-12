@@ -1,53 +1,61 @@
-<div style="width: 100%; height: 600px;">
-    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/1.12.0/model-viewer.min.js"></script>
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D GLB Model Viewer with AR</title>
+    <!-- Load Tailwind CSS for modern styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        #ar-button {
-            padding: 12px 24px !important; 
-            border: 2px solid #333 !important; 
-            background-color: #f0f0f0 !important; 
-            color: #333 !important; 
-            border-radius: 6px !important; 
-            cursor: pointer !important;
-            font-weight: bold !important;
-            font-size: 18px !important;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+        /* Set the body and html to take full screen height for centering */
+        html, body {
+            height: 100%;
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: #1f2937; /* Dark background */
+        }
+        /* Custom styling for model-viewer to make it visually appealing */
+        model-viewer {
+            width: 100%;
+            height: 80vh; /* Takes 80% of viewport height */
+            background-color: #2c3e50; /* Slightly lighter viewer background */
+            border-radius: 1.5rem; /* Rounded corners */
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+            --poster-color: #4b5563; /* Custom color for the loading poster */
         }
     </style>
-    
-    <model-viewer 
-        id="myModelViewer"
-        src="https://static.wixstatic.com/3d/ea23d8_548c5c649d9b45b79f8f41cf850ae351.glb" 
-        ar 
-        ar-modes="webxr scene-viewer quick-look" 
-        camera-controls 
-        environment-image="https://static.wixstatic.com/media/ea23d8_a94869e2f7fb4f3d83811e0c1797b8b0~mv2.jpg"
-        camera-orbit="0deg 90deg auto"
-        field-of-view="38.59deg"
-        tone-mapping="agx"
-        style="width: 100%; height: 100%;"
-        autoplay="false"
-    >
-        <button slot="ar-button" id="ar-button">
-            View in your space
-        </button>
-    </model-viewer>
+    <!-- Load the model-viewer component -->
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/1.13.0/model-viewer.min.js"></script>
+</head>
+<body class="flex flex-col items-center justify-center p-4 sm:p-8">
 
-    <script>
-        const modelViewer = document.querySelector('#myModelViewer');
+    <header class="text-center mb-6 w-full max-w-4xl">
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-white">Interactive 3D Model</h1>
+        <p class="text-gray-400 mt-2 text-lg">View, rotate, and experience this model in Augmented Reality.</p>
+    </header>
 
-        // Animation only runs when the user exits AR mode
-        modelViewer.addEventListener('ar-status', (event) => {
-            if (event.detail.status === 'exit') {
-                // If the model has animations, play the first one once.
-                if (modelViewer.availableAnimations.length > 0) {
-                    modelViewer.currentTime = 0; 
-                    modelViewer.play({ 
-                        repetitions: 1, 
-                        animationName: modelViewer.availableAnimations[0] 
-                    });
-                }
-            }
-        });
-    </script>
-</div>
+    <main class="w-full max-w-4xl">
+        <!-- The model-viewer component -->
+        <model-viewer
+            src="https://static.wixstatic.com/3d/ea23d8_548c5c649d9b45b79f8f41cf850ae351.glb"
+            alt="A detailed 3D geometric model"
+            ar
+            ar-modes="webxr scene-viewer quick-look"
+            camera-controls
+            shadow-intensity="1"
+            exposure="1.2"
+            class="mx-auto"
+        >
+            <!-- Slot for AR button (model-viewer handles button appearance) -->
+            <button slot="ar-button" class="mt-4 px-6 py-3 bg-indigo-600 text-white font-bold rounded-full shadow-lg hover:bg-indigo-700 transition duration-300 transform hover:scale-105">
+                ✨ View in AR
+            </button>
+        </model-viewer>
+    </main>
+
+    <footer class="mt-6 text-center text-sm text-gray-500 w-full max-w-4xl">
+        <p>Use your mouse/touch to orbit and zoom the model. Tap "View in AR" on a compatible mobile device.</p>
+    </footer>
+
+</body>
+</html>
