@@ -32,20 +32,25 @@
 
     <!--
         The model-viewer element:
-        - src: Points to the .glb file hosted on GitHub.
+        *** FIX APPLIED: Changed the src URL to use raw.githack.com for correct MIME types. ***
+        - src: Now points to the GLB file via a stable content delivery network (CDN) proxy.
         - ar: Enables Augmented Reality mode (requires an ARCore/ARKit compatible device).
         - ar-modes: Specifies the methods for AR (webxr is standard, scene-viewer is a fallback for Android).
         - camera-controls: Allows the user to rotate and zoom the model.
         - auto-rotate: Makes the model spin slowly by default.
         - shadow-intensity: Adjusts the shadow strength for better realism.
+        - loading="eager": Ensures the model starts loading immediately.
+        - touch-action="none": Prevents browser-default swipe actions from interfering with model rotation.
     -->
     <model-viewer
-        src="https://static.wixstatic.com/3d/ea23d8_548c5c649d9b45b79f8f41cf850ae351.glb"
+        src="https://raw.githack.com/x3merx3mer/ARtest/a43706b811ec94e201386db704cc4271b8a23ba8/Rocket.glb"
         ar
         ar-modes="webxr scene-viewer quick-look"
         camera-controls
         auto-rotate
         shadow-intensity="1"
+        loading="eager"
+        touch-action="none"
         alt="A 3D model of a rocket"
     >
         <!-- Custom button for AR mode, visible on compatible devices -->
@@ -56,4 +61,3 @@
 
 </body>
 </html>
-
